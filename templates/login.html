@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Credify Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="login-container">
         <div class="logo">
-            <img src="images/eye5.JPG" alt="BlinkChat Logo">
+            <img src="{{ url_for('static', filename='images/app-logo.JPG') }}" alt="loan Logo">
         </div>
         <form action="/login" method="POST">
             <div class="every-input">
