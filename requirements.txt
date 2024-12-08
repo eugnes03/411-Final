@@ -1,0 +1,5 @@
+flask
+sqlalchemy
+plaid-python
+python-dotenv
+flask-sqlalchemy
