@@ -10,18 +10,25 @@
         <div class="logo">
             <img src="{{ url_for('static', filename='images/app-logo.JPG') }}" alt="loan Logo">
         </div>
+
         <form action="/login" method="POST">
+
             <div class="every-input">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
             </div>
+
             <div class="every-input">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
+
             <button type="submit">Login</button>
         </form>
-        <button class="create-account">Create an Account</button>
+
+        <button class="create-account" onclick="window.location.href='{{ url_for('routes.create_account') }}'">Create an Account</button>
+        <button class="update-password" onclick="window.location.href='{{ url_for('routes.update_password') }}'">Update Password</button>
+
     </div>
 </body>
 </html>
