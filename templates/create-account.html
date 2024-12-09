@@ -20,6 +20,10 @@
     {% endwith %}
 
     <div class="login-container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/app-logo.JPG') }}" alt="loan Logo">
+        </div>
+
         <form action="/create-account" method="POST">
             <div class="every-input">
                 <label for="username">Username</label>
