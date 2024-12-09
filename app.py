@@ -1,8 +1,11 @@
 from flask import Flask
 from routes import routes
+import os
 
 # initializing Flask app
 app = Flask(__name__)
+
+app.secret_key = os.urandom(24).hex()
 
 # routes Blueprint
 app.register_blueprint(routes)
