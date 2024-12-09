@@ -63,9 +63,27 @@ def update_password():
         email = request.form.get("email")
         new_password = request.form.get("password")
 
-        # Debugging: Print form data
-        print(f"Username: {username}, Email: {email}, Password: {new_password}")
+        if not username or not email or not new_password:
+            return flash_and_render('update-password.html', "All fields are required.", "error")
 
+        # Check if user exists
+        existing_user = session.query(User).filter_by(username=username, email=email).first()
+        if not existing_user:
+            return flash_and_render('update-password.html', "User not found. Please check the username or email.", "error")
+
+
+        # Update password
+        try:
+            hashed_password = hashlib.sha256((new_password + existing_user.salt).encode()).hexdigest()
+            existing_user.hashed_password = hashed_password
+            session.commit()
+            return redirect(url_for('routes.login'))
+        except Exception as e:
+            session.rollback()
+            flash("An error occurred while updating the password.", "error")
+            print(f"Error: {e}")
+            return render_template('update-password.html')
+        
     return render_template("update-password.html")
 
 @routes.route("/login", methods=["GET", "POST"])
