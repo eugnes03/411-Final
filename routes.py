@@ -9,14 +9,13 @@ session = Session()
 # Define the Blueprint
 routes = Blueprint("routes", __name__)
 
-@routes.route("/")
-def home():
-    return "<p>Add home page if there's time</p>"
-
-
 def flash_and_render(template, message, category="info"):
     flash(message, category)
     return render_template(template)
+
+@routes.route('/index', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
 
 @routes.route('/create-account', methods=['GET', 'POST'])
 def create_account():
@@ -86,6 +85,30 @@ def update_password():
         
     return render_template("update-password.html")
 
+
 @routes.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+ 
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if not username or not password:
+            return flash_and_render('login.html', "All fields are required.", "error")
+
+        user = session.query(User).filter_by(username=username).first()
+
+        if not user:
+            return flash_and_render('login.html', "Invalid username or password.", "error")
+
+        hashed_input_password = hashlib.sha256((password + user.salt).encode()).hexdigest()
+        if hashed_input_password != user.hashed_password:
+            return flash_and_render('login.html', "Invalid username or password.", "error")
+
+        flash(f"Welcome back, {username}!", "success")
+        return redirect(url_for('routes.index')) 
+
     return render_template("login.html")
+
+
+

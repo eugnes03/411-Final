@@ -11,8 +11,8 @@ app.secret_key = os.urandom(24).hex()
 app.register_blueprint(routes)
 
 @app.route('/')
-def index():
-    return render_template('login.html')
+def home():
+    return render_template('home.html')
 
 @app.route('/check-eligibility', methods=['POST'])
 def check_eligibility():
