@@ -6,11 +6,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="login-container">
-        <!-- Div for dynamic messages -->
-        <div id="message-box"></div>
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div>
+        {% for category, message in messages %}
+        <div class="flash-message {{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
 
-        <form action="/create-account" method="POST" onsubmit="return validateForm()">
+    <div class="login-container">
+        <form action="/create-account" method="POST">
             <div class="every-input">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
@@ -29,33 +39,8 @@
             </div>
             <button type="submit">Create Account</button>
         </form>
+        <!-- Navigation to login page -->
+        <button onclick="window.location.href='{{ url_for('routes.login') }}'">Proceed to Login</button>
     </div>
-
-    <script>
-        function validateForm() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const messageBox = document.getElementById('message-box');
-
-            messageBox.innerHTML = '';
-
-            if (password !== confirmPassword) {
-                // Show error message
-                messageBox.innerHTML = '<div class="message error">Passwords do not match. Please try again.</div>';
-                return false; 
-            }
-
-            // Show success message
-            messageBox.innerHTML = '<div class="message success">Account created successfully! Redirecting to login...</div>';
-
-            // Redirect after 2 seconds
-            setTimeout(() => {
-                window.location.href = "/login";
-            }, 2000); 
-            
-            return false; 
-        }
-    </script>
-
 </body>
 </html>
