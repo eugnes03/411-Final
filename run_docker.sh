@@ -1,18 +1,17 @@
 #!/bin/bash
 
-# Step 1: Build the Docker image
-echo "Building Docker image..."
-docker build -t loan-qualification-app .
+# Build the Docker image
+docker build -t 411-final .
 
-# Step 2: Run the Docker container
-echo "Running Docker container..."
-docker run -d -p 5000:5000 --name loan-qualification-app-container loan-qualification-app
+# Stop and remove any existing container with the same name
+docker stop 411-final-container 2>/dev/null || true
+docker rm 411-final-container 2>/dev/null || true
 
-# Step 3: Display running containers
-echo "Here are your running containers:"
+# Run the Docker container
+docker run -d -p 5000:5000 --name 411-final-container 411-final
+
+# Display running containers
 docker ps
 
-# Instructions
-echo "The application is now running on http://localhost:5000"
-echo "Press Ctrl+C to stop this script. To stop the container, use: docker stop loan-qualification-app-container"
-
+# Print a success message
+echo "The 411-Final app is running. Access it at http://localhost:5000"
