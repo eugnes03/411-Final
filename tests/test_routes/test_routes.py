@@ -63,10 +63,10 @@ class TestRoutes(unittest.TestCase):
         response = self.app.post('/login', data={
             'username': 'noone',
             'password': 'dummy_hashed_password'
-        }
+        })
         self.assertIn(b"Welcome back, noone!", response.data)
 
-        
+
 
     def test_check_eligibility(self):
         payload = {
