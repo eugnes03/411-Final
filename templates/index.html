@@ -82,6 +82,12 @@
       <label for="loanAmount">Loan Amount</label>
       <input type="number" id="loanAmount" name="loanAmount" required>
 
+      <label for="monthlyDebt">Monthly Debt</label>
+      <input type="number" id="monthlyDebt" name="monthlyDebt" required>
+
+      <label for="assetValue">Asset Value</label>
+      <input type="number" id="assetValue" name="assetValue" required>
+
       <button type="submit">Check Eligibility</button>
     </form>
     <div class="message" id="message"></div>
@@ -94,13 +100,16 @@
       const creditScore = document.getElementById('creditScore').value;
       const annualIncome = document.getElementById('annualIncome').value;
       const loanAmount = document.getElementById('loanAmount').value;
+      const monthlyDebt = document.getElementById('monthlyDebt').value;
+      const assetValue = document.getElementById('assetValue').value;
+
 
       const response = await fetch('/check-eligibility', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, creditScore, annualIncome, loanAmount }),
+        body: JSON.stringify({ username, creditScore, annualIncome, loanAmount, monthlyDebt, assetValue }),
       });
 
       const result = await response.json();
