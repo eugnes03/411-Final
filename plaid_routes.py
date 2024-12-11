@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
-from plaid import Client
+from plaid import ApiClient, Configuration
+from plaid.api.plaid_api import PlaidApi
 import os
 from dotenv import load_dotenv
-from loan_logic import simulate_credit_score  # Assuming loan_logic.py contains simulation logic
 
 # Load environment variables from .env
 load_dotenv()
@@ -10,13 +10,16 @@ load_dotenv()
 # Initialize Flask Blueprint
 plaid_blueprint = Blueprint('plaid', __name__)
 
-# Initialize Plaid client
-client = Client(
-    client_id=os.getenv('PLAID_CLIENT_ID'),
-    secret=os.getenv('PLAID_SECRET'),
-    environment=os.getenv('PLAID_ENV', 'sandbox')  # Default to sandbox
-)
 
+configuration = Configuration(
+        host=os.getenv('PLAID_ENV', 'sandbox'),
+        api_key={
+            "clientId": os.getenv('PLAID_CLIENT_ID'),
+            "secret": os.getenv('PLAID_SECRET'),
+        },
+    )
+api_client = ApiClient(configuration)
+client = PlaidApi(api_client)
 # Route to generate a link token
 @plaid_blueprint.route('/create_link_token', methods=['POST'])
 def create_link_token():
@@ -97,8 +100,7 @@ def simulate_credit_score_endpoint():
         liabilities = client.Liabilities.get(access_token)['liabilities']
 
         # Simulate credit score
-        score = simulate_credit_score(income, liabilities)
-
+        score = 850 #for now
         return jsonify({'credit_score': score})
     except Exception as e:
         print(e)
