@@ -3,6 +3,3 @@ sqlalchemy
 plaid-python
 python-dotenv
 flask-sqlalchemy
-pytest
-pytest-flask
-coverage

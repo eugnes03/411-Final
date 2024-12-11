@@ -2,15 +2,14 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-
+# Define the base class for SQLAlchemy
 Base = declarative_base()
 
-# User model
+# Define the User model for account management
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String, unique=True, nullable=False)
-    email = Column(String, unique=True, nullable=False)
+    username = Column(String, nullable=False, unique=True)
     salt = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
 
@@ -24,12 +23,14 @@ class LoanQualification(Base):
     loan_amount = Column(Float, nullable=False)
     qualified = Column(Boolean, default=False)
 
-# Set up db & session
-engine = create_engine('sqlite:///loan_qualification_system.db', echo=True)
+# Create SQLite database and tables
+DATABASE_URL = "sqlite:///loan_qualification_system.db"
+engine = create_engine(DATABASE_URL, echo=True)
+Base.metadata.create_all(engine)
+
+# Create a session maker
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# create tables
-Base.metadata.create_all(engine)
 print("Database and tables have been successfully created for the Loan Qualification System.")
 
