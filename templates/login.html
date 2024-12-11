@@ -21,7 +21,7 @@
             <img src="{{ url_for('static', filename='images/app-logo.JPG') }}" alt="loan Logo">
         </div>
 
-        <form action="/login" method="POST" action="{{ url_for('routes.login') }}">
+        <form action="{{ url_for('routes.login') }}" method="POST">
 
             <div class="every-input">
                 <label for="username">Username</label>

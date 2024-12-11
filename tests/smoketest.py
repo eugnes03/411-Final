@@ -25,7 +25,6 @@ class SmokeTestCase(unittest.TestCase):
         self.assertIn(b'Login', response.data)
 
     def test_static_files(self):
-        """Ensure static files (e.g., CSS) are served correctly."""
         response = self.app.get('/static/styles.css')
         self.assertEqual(response.status_code, 200)
 
