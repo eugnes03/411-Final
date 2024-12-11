@@ -7,6 +7,17 @@ Base = declarative_base()
 
 # User model
 class User(Base):
+    '''
+    User model for storing user data
+
+    Attributes:
+    id (int): primary key
+    username (str): username of the user
+    email (str): email of the user
+    salt (str): salt used for hashing the password
+    hashed_password (str): hashed password
+    '''
+
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, nullable=False)
@@ -16,6 +27,17 @@ class User(Base):
 
 # Define the LoanQualification model for storing loan application data
 class LoanQualification(Base):
+    '''
+    LoanQualification model for storing loan application data
+
+    Attributes:
+    id (int): primary key
+    user_id (int): foreign key to the user
+    credit_score (int): credit score of the user
+    annual_income (float): annual income of the user
+    loan_amount (float): loan amount requested by the user
+    qualified (bool): whether the user is qualified for the loan or not
+    '''
     __tablename__ = 'loan_qualifications'
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, nullable=False)
