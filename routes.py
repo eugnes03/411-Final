@@ -83,7 +83,7 @@ def update_password():
             flash("An error occurred while updating the password.", "error")
             print(f"Error: {e}")
             return render_template('update-password.html')
-        
+
     return render_template("update-password.html")
 
 
@@ -99,7 +99,7 @@ def login():
         hashed_password = sha256((user.salt + password).encode()).hexdigest()
         if hashed_password == user.hashed_password:
             flash(f"Welcome back, {username}!", "success")
-            return redirect(url_for('index'))
+            return redirect(url_for('routes.index'))
         else:
             flash("Invalid username or password.", "error")
     else:
