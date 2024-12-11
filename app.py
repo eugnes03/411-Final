@@ -1,13 +1,21 @@
+from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, jsonify
 from routes import routes
 import os
 
-# initializing Flask app
+# Initialize Flask app
 app = Flask(__name__)
 
 app.secret_key = os.urandom(24).hex()
 
-# routes Blueprint
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///loan_qualification_system.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize SQLAlchemy
+db = SQLAlchemy(app)
+
+# Register routes
 app.register_blueprint(routes)
 
 @app.route('/')
@@ -29,4 +37,3 @@ def check_eligibility():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

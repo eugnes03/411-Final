@@ -2,6 +2,7 @@ from flask import Flask, render_template, Blueprint, request, redirect, url_for,
 from sqlalchemy.orm import sessionmaker
 from initialize_db import engine, User
 import hashlib, os
+from hashlib import sha256
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -86,29 +87,29 @@ def update_password():
     return render_template("update-password.html")
 
 
-@routes.route("/login", methods=["GET", "POST"])
+@routes.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "POST":
- 
-        username = request.form.get("username")
-        password = request.form.get("password")
+    username = request.form['username']
+    password = request.form['password']
 
-        if not username or not password:
-            return flash_and_render('login.html', "All fields are required.", "error")
+    user = session.query(User).filter_by(username=username).first()
 
-        user = session.query(User).filter_by(username=username).first()
+    if user:
+        # Hash the input password using the user's salt
+        hashed_password = sha256((user.salt + password).encode()).hexdigest()
+        if hashed_password == user.hashed_password:
+            flash(f"Welcome back, {username}!", "success")
+            return redirect(url_for('index'))
+        else:
+            flash("Invalid username or password.", "error")
+    else:
+        flash("Invalid username or password.", "error")
 
-        if not user:
-            return flash_and_render('login.html', "Invalid username or password.", "error")
+    return redirect(url_for("routes.login"))
 
-        hashed_input_password = hashlib.sha256((password + user.salt).encode()).hexdigest()
-        if hashed_input_password != user.hashed_password:
-            return flash_and_render('login.html', "Invalid username or password.", "error")
 
-        flash(f"Welcome back, {username}!", "success")
-        return redirect(url_for('routes.index')) 
 
-    return render_template("login.html")
+
 
 
 
