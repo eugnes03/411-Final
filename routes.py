@@ -19,6 +19,14 @@ def index():
 
 @routes.route('/create-account', methods=['GET', 'POST'])
 def create_account():
+    '''
+    Create a new account
+
+    - Check if all fields are filled
+    - Check if passwords match
+    - Check if username and email are unique
+    - Hash the password and save the user
+    '''
     if request.method == 'POST':
         username = request.form.get('username')
         email = request.form.get('email')
@@ -56,6 +64,14 @@ def create_account():
 
 @routes.route("/update-password", methods=["GET", "POST"])
 def update_password():
+
+    '''
+    Update the password of an existing user
+
+    - Check if all fields are filled
+    - Check if user exists
+    - Update the password
+    '''
     if request.method == "POST":
         # Get form data
         username = request.form.get("username")
@@ -82,14 +98,22 @@ def update_password():
             flash("An error occurred while updating the password.", "error")
             print(f"Error: {e}")
             return render_template('update-password.html')
-        
+
     return render_template("update-password.html")
 
 
 @routes.route("/login", methods=["GET", "POST"])
 def login():
+    '''
+    Login a user
+
+    - Check if all fields are filled
+    - Check if user exists
+    - Check if password is correct
+    '''
+
     if request.method == "POST":
- 
+
         username = request.form.get("username")
         password = request.form.get("password")
 
@@ -106,7 +130,7 @@ def login():
             return flash_and_render('login.html', "Invalid username or password.", "error")
 
         flash(f"Welcome back, {username}!", "success")
-        return redirect(url_for('routes.index')) 
+        return redirect(url_for('routes.index'))
 
     return render_template("login.html")
 

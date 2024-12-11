@@ -12,10 +12,20 @@ app.register_blueprint(routes)
 
 @app.route('/')
 def home():
+    '''
+    Home route
+    '''
     return render_template('home.html')
 
 @app.route('/check-eligibility', methods=['POST'])
 def check_eligibility():
+    '''
+    Check eligibility route
+
+    Returns:
+
+    qualified (bool): True if the user is eligible for the loan, False otherwise
+    '''
     data = request.json
     username = data.get('username')
     credit_score = int(data.get('creditScore', 0))
