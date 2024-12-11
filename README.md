@@ -19,7 +19,7 @@ API Calls needs to be included through Plaid API.
 In addition, this project needs to include flask and python.
 
 We also set up a database with user information, specifically user logins and passwords. We will be using SQLite for this project.
-
+revert changes
 ## Installation Guide
 
 ## Contributors
