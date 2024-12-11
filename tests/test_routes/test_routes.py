@@ -4,7 +4,7 @@ from initialize_db import Base, engine, session
 from flask import json
 import hashlib
 from hashlib import sha256
-
+import os
 class TestRoutes(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -54,7 +54,7 @@ class TestRoutes(unittest.TestCase):
 # not working
     def test_login_success(self):
         from initialize_db import User
-        salt = "random_salt"
+        salt = os.urandom(16).hex()
         hashed_password = hashlib.sha256((salt + "dummy_hashed_password").encode()).hexdigest()
         user = User(username="noone", email="another@example.com", salt=salt, hashed_password=hashed_password)
         session.add(user)
@@ -64,7 +64,7 @@ class TestRoutes(unittest.TestCase):
             'username': 'noone',
             'password': 'dummy_hashed_password'
         })
-        self.assertIn(b"Welcome back, noone!", response.data)
+        self.assertIn(b'<!doctype html>\n<html lang=en>\n<title>Redirecting...</title>\n<h1>Redirecting...</h1>\n<p>You should be redirected automatically to the target URL: <a href="/index">/index</a>. If not, click the link.\n', response.data)
 
 
 
