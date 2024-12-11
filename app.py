@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from routes import routes
 import os
-
+from plaid_routes import plaid_blueprint
 # initializing Flask app
 app = Flask(__name__)
 
@@ -9,7 +9,7 @@ app.secret_key = os.urandom(24).hex()
 
 # routes Blueprint
 app.register_blueprint(routes)
-
+app.register_blueprint(plaid_blueprint, url_prefix='/api/plaid')
 @app.route('/')
 def home():
     return render_template('home.html')
